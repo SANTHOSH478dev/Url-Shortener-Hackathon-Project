@@ -1,0 +1,24 @@
+.not-found-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.not-found-content h1 {
+  font-size: 5rem;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.not-found-content p {
+  color: var(--color-text-muted);
+  margin: var(--space-md) 0;
+  font-size: 1.05rem;
+}

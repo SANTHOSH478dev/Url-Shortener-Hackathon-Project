@@ -1,0 +1,33 @@
+.public-stats-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--gradient-hero);
+}
+
+.public-stats-card {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+}
+
+.public-stats-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: var(--space-xs);
+}
+
+.public-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.public-stats-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}

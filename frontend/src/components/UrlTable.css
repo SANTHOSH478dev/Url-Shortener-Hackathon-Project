@@ -1,0 +1,114 @@
+.url-table-wrapper {
+  overflow-x: auto;
+}
+
+.url-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.url-table th {
+  text-align: left;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-bg-soft);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.url-table td {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.url-row {
+  animation: fadeIn 0.4s ease both;
+  transition: var(--transition);
+}
+
+.url-table tbody tr:hover {
+  background: var(--color-bg-soft);
+}
+
+.url-cell {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+.short-link {
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.short-link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.action-buttons .btn-icon {
+  font-size: 1rem;
+}
+
+.btn-icon.copied {
+  animation: popCheck 0.35s ease;
+}
+
+.btn-icon-danger:hover:not(:disabled) {
+  background: #fef2f2;
+  color: var(--color-danger);
+}
+
+/* Responsive visibility */
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+.url-cards {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.url-card {
+  transition: var(--transition-slow);
+}
+
+.url-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.url-card .url-cell {
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-all;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .desktop-only {
+    display: none;
+  }
+  .mobile-only {
+    display: block;
+  }
+}
