@@ -86,7 +86,7 @@ url-shortener/
 │   ├── utils/
 │   │   ├── generateToken.js
 │   │   └── generateShortCode.js
-│   ├── .env.example
+│   ├── .env
 │   ├── package.json
 │   └── server.js
 │
@@ -138,7 +138,7 @@ cd url-shortener
 ```bash
 cd backend
 npm install
-cp .env.example .env
+cp .env
 # Edit .env and set MONGO_URI, JWT_SECRET, BASE_URL, CLIENT_URL
 npm run dev      # starts on http://localhost:5000
 ```
@@ -147,7 +147,7 @@ npm run dev      # starts on http://localhost:5000
 ```bash
 cd frontend
 npm install
-cp .env.example .env
+cp .env
 # Edit .env if your backend runs on a different host/port
 npm start        # starts on http://localhost:3000
 ```
