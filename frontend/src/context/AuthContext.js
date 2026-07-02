@@ -14,24 +14,46 @@ export const AuthProvider = ({ children }) => {
     if (storedUser && token) {
       setUser(JSON.parse(storedUser));
     }
+
     setLoading(false);
   }, []);
 
-const login = async (email, password) => {
-  const { data } = await api.post('/api/auth/login', { email, password });
-    const userData = { _id: data._id, name: data.name, email: data.email };
+  const login = async (email, password) => {
+    const { data } = await api.post('/auth/login', {
+      email,
+      password,
+    });
+
+    const userData = {
+      _id: data._id,
+      name: data.name,
+      email: data.email,
+    };
+
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
+
     return userData;
   };
 
   const signup = async (name, email, password) => {
-  const { data } = await api.post('/api/auth/signup', { name, email, password });
-    const userData = { _id: data._id, name: data.name, email: data.email };
+    const { data } = await api.post('/auth/signup', {
+      name,
+      email,
+      password,
+    });
+
+    const userData = {
+      _id: data._id,
+      name: data.name,
+      email: data.email,
+    };
+
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
+
     return userData;
   };
 
@@ -42,7 +64,15 @@ const login = async (email, password) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        signup,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
