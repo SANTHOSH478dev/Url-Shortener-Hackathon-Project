@@ -1,17 +1,12 @@
 import axios from "axios";
 
-// Backend API URL
-const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:5000/api";
-
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: "https://url-shortener-hackathon-project.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Attach JWT token to every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -25,7 +20,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Handle unauthorized responses
 api.interceptors.response.use(
   (response) => response,
   (error) => {
