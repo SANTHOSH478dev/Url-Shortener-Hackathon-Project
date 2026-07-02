@@ -102,12 +102,14 @@ const UrlTable = ({ urls, onDelete, onUpdate }) => {
                 </td>
                 <td>
                   <a
-                    href={url.shortUrl}
+                  href={url.shortUrl || `https://url-shortener-hackathon-project.onrender.com/${url.shortCode}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="short-link text-mono"
                   >
-                    {url.shortUrl.replace(/^https?:\/\//, "")}
+                 {(url.shortUrl ||
+`https://url-shortener-hackathon-project.onrender.com/${url.shortCode}`)
+.replace(/^https?:\/\//, "")}
                   </a>
                 </td>
                 <td className="text-muted">{formatDate(url.createdAt)}</td>
@@ -120,7 +122,13 @@ const UrlTable = ({ urls, onDelete, onUpdate }) => {
                     <button
                       className={`btn btn-icon btn-ghost ${copiedId === url._id ? "copied" : ""}`}
                       title="Copy"
-                      onClick={() => handleCopy(url.shortUrl, url._id)}
+                      onClick={() =>
+  handleCopy(
+    url.shortUrl ||
+      `https://url-shortener-hackathon-project.onrender.com/${url.shortCode}`,
+    url._id
+  )
+}
                     >
                       {copiedId === url._id ? "✅" : "📋"}
                     </button>
@@ -239,12 +247,13 @@ const UrlTable = ({ urls, onDelete, onUpdate }) => {
       </div>
 
       {qrModalUrl && (
-        <QRCodeModal
-          urlId={qrModalUrl._id}
-          shortUrl={qrModalUrl.shortUrl}
-          onClose={() => setQrModalUrl(null)}
-        />
-      )}
+    <QRCodeModal
+  urlId={qrModalUrl._id}
+  shortUrl={
+    qrModalUrl.shortUrl ||
+    `https://url-shortener-hackathon-project.onrender.com/${qrModalUrl.shortCode}`
+  }
+/>
 
       {editModalUrl && (
         <EditUrlModal
