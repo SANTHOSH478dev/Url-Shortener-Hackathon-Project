@@ -246,22 +246,24 @@ const UrlTable = ({ urls, onDelete, onUpdate }) => {
         ))}
       </div>
 
-      {qrModalUrl && (
-    <QRCodeModal
-  urlId={qrModalUrl._id}
-  shortUrl={
-    qrModalUrl.shortUrl ||
-    `https://url-shortener-hackathon-project.onrender.com/${qrModalUrl.shortCode}`
-  }
-/>
+{qrModalUrl && (
+  <QRCodeModal
+    urlId={qrModalUrl._id}
+    shortUrl={
+      qrModalUrl.shortUrl ||
+      `https://url-shortener-hackathon-project.onrender.com/${qrModalUrl.shortCode}`
+    }
+    onClose={() => setQrModalUrl(null)}
+  />
+)}
 
-      {editModalUrl && (
-        <EditUrlModal
-          url={editModalUrl}
-          onClose={() => setEditModalUrl(null)}
-          onUpdated={(updated) => onUpdate(updated)}
-        />
-      )}
+{editModalUrl && (
+  <EditUrlModal
+    url={editModalUrl}
+    onClose={() => setEditModalUrl(null)}
+    onUpdated={(updated) => onUpdate(updated)}
+  />
+)}
     </>
   );
 };
