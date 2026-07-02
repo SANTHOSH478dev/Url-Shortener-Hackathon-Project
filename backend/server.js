@@ -15,12 +15,14 @@ require("dotenv").config();
 
 console.log("MONGO_URI:", process.env.MONGO_URI);
 // Middleware
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || '*',
-    credentials: true,
-  })
-);
+
+app.use(cors({
+    origin: [
+        "https://url-shortener-hackathon-project-1.onrender.com",
+        "http://localhost:3000"
+    ],
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
