@@ -5,28 +5,31 @@ import BulkUpload from "../components/BulkUpload";
 import UrlTable from "../components/UrlTable";
 import "./Dashboard.css";
 
-/** Counts up from 0 to `value` whenever `value` changes. */
 const AnimatedCounter = ({ value, duration = 600 }) => {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
     let start = null;
     let raf;
-    const from = display;
-    const to = value;
 
     const step = (timestamp) => {
       if (start === null) start = timestamp;
+
       const progress = Math.min((timestamp - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.round(from + (to - from) * eased));
-      if (progress < 1) raf = requestAnimationFrame(step);
+
+      setDisplay(Math.round(value * eased));
+
+      if (progress < 1) {
+        raf = requestAnimationFrame(step);
+      }
     };
 
+    setDisplay(0);
     raf = requestAnimationFrame(step);
+
     return () => cancelAnimationFrame(raf);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [value, duration]);
 
   return <span>{display}</span>;
 };
@@ -60,10 +63,25 @@ const Dashboard = () => {
   const fetchUrls = async () => {
     setLoading(true);
     setError("");
+
     try {
-      const { data } = await api.get("/urls");
-      setUrls(data);
+      const response = await api.get("/urls");
+
+      console.log("Backend Response:", response.data);
+
+      if (Array.isArray(response.data)) {
+        setUrls(response.data);
+      } else if (Array.isArray(response.data.urls)) {
+        setUrls(response.data.urls);
+      } else if (Array.isArray(response.data.data)) {
+        setUrls(response.data.data);
+      } else {
+        console.error("Unexpected API Response:", response.data);
+        setUrls([]);
+      }
     } catch (err) {
+      console.error(err);
+      setUrls([]);
       setError("Failed to load your links. Please try again.");
     } finally {
       setLoading(false);
@@ -72,7 +90,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchUrls();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCreated = (newUrl) => {
@@ -85,15 +102,21 @@ const Dashboard = () => {
 
   const handleUpdate = (updated) => {
     setUrls((prev) =>
-      prev.map((u) => (u._id === updated._id ? { ...u, ...updated } : u)),
+      prev.map((u) => (u._id === updated._id ? updated : u))
     );
   };
 
-  const totalClicks = urls.reduce((sum, u) => sum + (u.clicks || 0), 0);
-  const activeLinks = urls.filter((u) => u.isActive).length;
+  const safeUrls = Array.isArray(urls) ? urls : [];
+
+  const totalClicks = safeUrls.reduce(
+    (sum, item) => sum + (item.clicks || 0),
+    0
+  );
+
+  const activeLinks = safeUrls.filter((item) => item.isActive).length;
 
   const statValues = {
-    total: urls.length,
+    total: safeUrls.length,
     clicks: totalClicks,
     active: activeLinks,
   };
@@ -111,15 +134,19 @@ const Dashboard = () => {
       </div>
 
       <div className="stats-grid mb-3">
-        {STAT_CONFIG.map((stat, i) => (
+        {STAT_CONFIG.map((stat, index) => (
           <div
-            className="card card-padded stat-card animate-in"
             key={stat.key}
-            style={{ animationDelay: `${i * 0.06}s` }}
+            className="card card-padded stat-card animate-in"
+            style={{ animationDelay: `${index * 0.06}s` }}
           >
-            <div className={`stat-icon ${stat.className}`}>{stat.icon}</div>
+            <div className={`stat-icon ${stat.className}`}>
+              {stat.icon}
+            </div>
+
             <div>
               <span className="stat-label">{stat.label}</span>
+
               <span className="stat-value">
                 <AnimatedCounter value={statValues[stat.key]} />
               </span>
@@ -134,6 +161,7 @@ const Dashboard = () => {
       >
         <CreateUrlForm onCreated={handleCreated} />
       </div>
+
       <div
         className="dashboard-section animate-in"
         style={{ animationDelay: "0.22s" }}
@@ -143,23 +171,32 @@ const Dashboard = () => {
 
       {loading ? (
         <div className="full-page-loader" style={{ minHeight: "30vh" }}>
-          <span className="spinner spinner-dark" />
+          <span className="spinner spinner-dark"></span>
         </div>
       ) : error ? (
         <div className="card card-padded">
           <div className="empty-state">
             <div className="empty-state-icon">⚠️</div>
+
             <h3>Something went wrong</h3>
-            <p className="mb-2">{error}</p>
-            <button className="btn btn-primary" onClick={fetchUrls}>
+
+            <p>{error}</p>
+
+            <button
+              className="btn btn-primary"
+              onClick={fetchUrls}
+            >
               Try Again
             </button>
           </div>
         </div>
       ) : (
-        <div className="animate-in" style={{ animationDelay: "0.26s" }}>
+        <div
+          className="animate-in"
+          style={{ animationDelay: "0.26s" }}
+        >
           <UrlTable
-            urls={urls}
+            urls={safeUrls}
             onDelete={handleDelete}
             onUpdate={handleUpdate}
           />
