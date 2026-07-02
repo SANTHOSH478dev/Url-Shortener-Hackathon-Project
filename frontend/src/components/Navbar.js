@@ -63,7 +63,9 @@ const Navbar = () => {
                 <span className="navbar-user-avatar">
                   {user.name?.charAt(0)?.toUpperCase() || "?"}
                 </span>
-                Hi, user?.name?.split(" ")[0] || "User"
+              <p>
+  Hi, {user?.name?.split(" ")[0] || "User"}
+</p>
               </span>
               <button
                 className="btn btn-secondary btn-sm"
